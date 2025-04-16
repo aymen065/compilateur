@@ -1,0 +1,471 @@
+package compilateur;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.Stack;
+
+public class Parser {
+	public static String [] tab(int i){
+		String [][] slr2 = {{"101","r63","err","err","err","r63","err","err","err","err","err","err","err","err","err","r63","r63","err","r63","r63","r63","err","err","r63","err","err","r63","r63","r63","r63","r63","r63","r63","r63","r63","r63","r63","r63","r63","r63","r63","r63","err","err","err","err","err","r63","err","r63","r63","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err"},
+				{"102","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","s135","err","err","err","r41","r41","r41","r41","r41","r41","r41","r41","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err"},
+				{"103","err","err","err","s10","err","err","err","err","err","err","err","err","s11","s12","err","s17","err","err","err","err","s18","err","err","s19","s16","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","136","9","13","14","15","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err"},
+				{"104","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","s56","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","137","err","err","err","err","err","err","err","err","err"},
+				{"105","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","s110","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","138","err","err","err","err","err"},
+				{"106","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","s140","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","139","err","err"},
+				{"107","err","err","s141","s10","err","err","err","err","err","err","err","err","s11","s12","err","s17","err","err","err","err","s18","err","err","s19","s16","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","67","13","14","15","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err"},
+				{"108","r39","err","err","err","err","err","err","err","err","err","err","err","err","err","r39","r39","err","r39","r39","err","err","err","err","err","err","r39","err","err","err","err","err","err","err","err","err","r39","r39","r39","r39","r39","r39","err","err","err","err","err","s110","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","126","err","err","err","err","err"},
+				{"109","r18","err","err","err","err","err","err","err","err","err","err","err","err","err","r18","r18","err","r18","r18","err","err","err","err","err","err","r18","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err"},
+				{"110","r69","err","err","err","r69","err","err","err","err","err","err","err","err","err","r69","r69","err","r69","r69","r69","err","err","r69","err","err","r69","r69","r69","r69","r69","r69","r69","r69","r69","err","r69","r69","r69","r69","r69","r69","err","err","err","err","err","r69","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err"},
+				{"111","err","err","err","s47","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","s56","s55","s53","s54","s34","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","142","err","err","err","75","err","76","52","51","50","49","74","","err","err","err","err","err"},
+				{"112","err","err","err","r70","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","r70","r70","r70","r70","r70","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","","err","err","err","err","err"},
+				{"113","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","s110","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","143","err","err","err","err","err"},
+				{"114","s79","err","err","err","err","err","err","err","err","err","err","err","err","err","s144","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err"},
+				{"115","r27","err","err","err","err","err","err","err","err","err","err","err","err","err","r27","r27","err","r27","r27","err","err","err","err","err","err","r27","r41","r41","r41","r41","r41","r41","r41","r41","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err"},
+				{"116","s79","err","err","err","err","err","err","err","err","err","err","err","err","err","r24","r24","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err"},
+				{"117","r28","err","err","err","err","err","err","err","err","err","err","err","err","err","r28","r28","err","r28","r28","r28","err","err","r28","err","err","r28","r28","r28","r28","r28","r28","r28","r28","r28","err","err","err","err","err","err","err","err","err","err","err","err","r28","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err"},
+				{"118","r29","err","err","err","err","err","err","err","err","err","err","err","err","err","r29","r29","err","r29","r29","r29","err","err","r29","err","err","r29","r29","r29","r29","r29","r29","r29","r29","r29","err","err","err","err","err","err","err","err","err","err","err","err","r29","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err"},
+				{"119","r30","err","err","err","err","err","err","err","err","err","err","err","err","err","r30","r30","err","r30","r30","r30","err","err","r30","err","err","r30","r30","r30","r30","r30","r30","r30","r30","r30","err","err","err","err","err","err","err","err","err","err","err","err","r30","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err"},
+				{"120","r31","err","err","err","err","err","err","err","err","err","err","err","err","err","r31","r31","err","r31","r31","r31","err","err","r31","err","err","r31","r31","r31","r31","r31","r31","r31","r31","r31","err","err","err","err","err","err","err","err","err","err","err","err","r31","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err"},
+				{"121","r32","err","err","err","err","err","err","err","err","err","err","err","err","err","r32","r32","err","r32","r32","r32","err","err","r32","err","err","r32","r32","r32","r32","r32","r32","r32","r32","r32","err","err","err","err","err","err","err","err","err","err","err","err","r32","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err"},
+				{"122","r33","err","err","err","err","err","err","err","err","err","err","err","err","err","r33","r33","err","r33","r33","r33","err","err","r33","err","err","r33","r33","r33","r33","r33","r33","r33","r33","r33","err","err","err","err","err","err","err","err","err","err","err","err","r33","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err"},
+				{"123","r34","err","err","err","err","err","err","err","err","err","err","err","err","err","r34","r34","err","r34","r34","r34","err","err","r34","err","err","r34","r34","r34","r34","r34","r34","r34","r34","r34","err","err","err","err","err","err","err","err","err","err","err","err","r34","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err"},
+				{"124","r35","err","err","err","err","err","err","err","err","err","err","err","err","err","r35","r35","err","r35","r35","r35","err","err","r35","err","err","r35","r35","r35","r35","r35","r35","r35","r35","r35","err","err","err","err","err","err","err","err","err","err","err","err","r35","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err"},
+				{"125","r36","err","err","err","err","err","err","err","err","err","err","err","err","err","r36","r36","err","r36","r36","r36","err","err","r36","err","err","r36","r36","r36","r36","r36","r36","r36","r36","r36","err","err","err","err","err","err","err","err","err","err","err","err","r36","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err"},
+				{"126","r58","err","err","err","err","err","err","err","err","err","err","err","err","err","r58","r58","err","r58","r58","err","err","err","err","err","err","r58","r58","r58","r58","r58","r58","r58","r58","r58","err","r58","r58","r58","r58","r58","r58","err","err","err","err","err","r58","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err"},
+				{"127","r52","err","err","err","err","err","err","err","err","err","err","err","err","err","r52","r52","err","r52","r52","err","err","err","err","err","err","r52","r52","r52","r52","r52","r52","r52","r52","r52","err","r52","r52","r52","r52","r52","r52","err","err","err","err","err","r52","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err"},
+				{"128","r53","err","err","err","err","err","err","err","err","err","err","err","err","err","r53","r53","err","r53","r53","err","err","err","err","err","err","r53","r53","r53","r53","r53","r53","r53","r53","r53","err","r53","r53","r53","r53","r53","r53","err","err","err","err","err","r53","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err"},
+				{"129","r54","err","err","err","err","err","err","err","err","err","err","err","err","err","r54","r54","err","r54","r54","err","err","err","err","err","err","r54","r54","r54","r54","r54","r54","r54","r54","r54","err","r54","r54","r54","r54","r54","r54","err","err","err","err","err","r54","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err"},
+				{"130","r55","err","err","err","err","err","err","err","err","err","err","err","err","err","r55","r55","err","r55","r55","err","err","err","err","err","err","r55","r55","r55","r55","r55","r55","r55","r55","r55","err","r55","r55","r55","r55","r55","r55","err","err","err","err","err","r55","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err"},
+				{"131","r56","err","err","err","err","err","err","err","err","err","err","err","err","err","r56","r56","err","r56","r56","err","err","err","err","err","err","r56","r56","r56","r56","r56","r56","r56","r56","r56","err","r56","r56","r56","r56","r56","r56","err","err","err","err","err","r56","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err"},
+				{"132","r57","err","err","err","err","err","err","err","err","err","err","err","err","err","r57","r57","err","r57","r57","err","err","err","err","err","err","r57","r57","r57","r57","r57","r57","r57","r57","r57","err","r57","r57","r57","r57","r57","r57","err","err","err","err","err","r57","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err"},
+				{"133","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","s140","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","145","err","err"},
+				{"134","r61","err","err","err","r61","err","err","err","err","err","err","err","err","err","r61","r61","err","r61","r61","r61","err","err","r61","err","err","r61","r61","r61","r61","r61","r61","r61","r61","r61","err","r61","r61","r61","r61","r61","r61","err","err","err","err","err","r61","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err"},
+				{"135","err","err","err","s10","err","err","err","err","err","err","err","err","s11","s12","err","s17","err","err","err","err","s18","err","err","s19","s16","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","146","9","13","14","15","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err"},
+				{"136","s79","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","r26","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err"},
+				{"137","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","s147","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err"},
+				{"138","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","r47","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","r47","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err"},
+				{"139","err","err","err","err","err","err","err","err","err","err","s148","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err"},
+				{"140","r72","err","err","err","r72","err","err","err","err","err","r72","err","err","err","r72","r72","err","r72","r72","r72","err","err","r72","err","err","r72","r72","r72","r72","r72","r72","r72","r72","r72","err","r72","r72","r72","r72","r72","r72","err","err","err","err","err","r72","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err"},
+				{"141","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","r1","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err"},
+				{"142","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","s110","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","149","err","err","err","err","err"},
+				{"143","r37","err","err","err","r37","err","err","err","err","err","err","err","err","err","r37","r37","err","r37","r37","r37","err","err","r37","err","err","r37","r37","r37","r37","r37","r37","r37","r37","r37","err","r37","r37","r37","r37","r37","r37","err","err","err","err","err","r37","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err"},
+				{"144","r21","err","err","err","err","err","err","err","err","err","err","err","err","err","r21","r21","err","r21","r21","err","err","err","err","err","err","r21","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err"},
+				{"145","r60","err","err","err","r60","err","err","err","err","err","err","err","err","err","r60","r60","err","r60","r60","r60","err","err","r60","err","err","r60","r60","r60","r60","r60","r60","r60","r60","r60","err","r60","r60","r60","r60","r60","r60","err","err","err","err","err","r60","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err"},
+				{"146","s79","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","r25","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err"},
+				{"147","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","s56","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","150","err","err","err","err","err","err","err","err","err"},
+				{"148","err","err","err","err","err","s21","s22","s23","s24","s25","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","s27","err","err","err","err","err","err","151","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","26"},
+				{"149","r19","err","err","err","err","err","err","err","err","err","err","err","err","err","r19","r19","err","r19","r19","err","err","err","err","err","err","r19","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err"},
+				{"150","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","r46","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","r46","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err"},
+				{"151","r13","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err"}};
+		return slr2[i-1];
+	}
+	public String[] LRGS = {"P1->P",
+			"P->D ; debut I ; fin",
+			"P->D ;",
+			"P-> debut I ; fin",
+			"D->D ; D1",
+			"D->D1",
+			"D1->V T",
+			"V->id , V",
+			"V->id",
+			"T->caractere",
+			"T->entier",
+			"T->reel",
+			"T->booleen",
+			"T->tab aco N acf de T",
+			"T->chap T",
+			"I->I11",
+			"I->I ; I11",
+			"I11->id <- E41",
+			"I11->lire po E5 pf",
+			"I11->ecrire po E12 virg E12 pf",
+			"I11->I1 finsi",
+			"I11->I1 si non I finsi",
+			"I11->I2 fintq",
+			"I11->I3 finp",
+			"I1->si E1 alors I" ,
+			"I2->tant que E1 faire I",
+			"I3->pour E2 faire I",
+			"I11->repeter I jusqu'à E1",
+			"E1->E11 = E12",
+			"E1->E11 < E12",
+			"E1->E11 <= E12",
+			"E1->E11 > E12",
+			"E1->E11 >= E12",
+			"E1->E11 <> E12",
+			"E1->E11 et E12",
+			"E1->E11 ou E12",
+			"E1->po E1 pf",
+			"E12->po E12 pf",
+			"E41->E3",
+			"E41->E4",
+			"E41->E5",
+			"E11->E1",
+			"E11->E4",
+			"E11->E5",
+			"E12->E3",
+			"E12->E5",
+			"E2->id de N à N",
+			"E2->po E2 pf",
+			"E3->B",
+			"E3->L",
+			"E3->N",
+			"E3->R",
+			"E4->E41 div E12",
+			"E4->E41 mod E12",
+			"E4->E41 + E12",
+			"E4->E41 - E12",
+			"E4->E41 * E12",
+			"E4->E41 / E12",
+			"E4->po E4 pf",
+			"E5->id",
+			"E5->id aco N acf",
+			"R->N pt N",
+			"N->nb",
+			"N->nb N",
+			"L->litt",
+			"L->litt L",
+			"B->vrai",
+			"B->faux",
+			"po->(",
+			"pf->)",
+			"virg->,",
+			"aco->[",
+			"acf->]",
+			"pt->.",
+			"chap->^"		
+	};
+	
+	public String[][] tableSLR ={{"etat/VT",";","debut","fin","id",",","caractere","entier","reel","booleen","tab","de","<-","lire","ecrire","finsi","si","non","fintq","finp","alors","tant","que","faire","pour","repeter","jusqu'à","=","<","<=",">",">=","<>","et","ou","à","div","mod","+","-","*","/","nb","litt","vrai","faux","(",")","[","]",".","^","$","P1","P","D","D1","V","T","I","I11","I1","I2","I3","E1","E12","E41","E11","E2","E3","E4","E5","R","N","L","B","po","pf","virg","aco","acf","pt","chap"},
+			{"0","err","s3","err","s6","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","1","2","4","5","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err"},
+			{"1","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","acc","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err"},
+			{"2","s7","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err"},
+			{"3","err","err","err","s10","err","err","err","err","err","err","err","err","s11","s12","err","s17","err","err","err","err","s18","err","err","s19","s16","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","8","9","13","14","15","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err"},
+			{"4","r5","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err"},
+			{"5","err","err","err","err","err","s21","s22","s23","s24","s25","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","s27","err","err","err","err","err","err","20","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","26"},
+			{"6","err","err","err","err","s28","r8","r8","r8","r8","r8","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","r8","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err"},
+			{"7","err","s29","err","s6","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","r2","err","err","err","30","5","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err"},
+			{"8","s31","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err"},
+			{"9","r15","err","err","err","err","err","err","err","err","err","err","err","err","err","r15","r15","err","r15","r15","err","err","err","err","err","err","r15","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err"},
+			{"10","err","err","err","err","err","err","err","err","err","err","err","s32","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err"},
+			{"11","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","s34","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","33","err","err","err","err","err","err"},
+			{"12","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","s34","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","35","err","err","err","err","err","err"},
+			{"13","err","err","err","err","err","err","err","err","err","err","err","err","err","err","s36","s37","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err"},
+			{"14","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","s38","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err"},
+			{"15","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","s39","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err"},
+			{"16","err","err","err","s10","err","err","err","err","err","err","err","err","s11","s12","err","s17","err","err","err","err","s18","err","err","s19","s16","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err"},
+			{"17","err","err","err","s47","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","s56","s55","s53","s54","s34","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","41","err","46","42","","48","44","45","52","51","50","49","43","err","err","err","err","err","err"},
+			{"18","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","s57","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err"},
+			{"19","err","err","err","s59","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","s34","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","58","err","err","err","err","err","err","err","60","err","err","err","err","err","err"},
+			{"20","r6","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err"},
+			{"21","r9","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err"},
+			{"22","r10","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err"},
+			{"23","r11","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err"},
+			{"24","r12","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err"},
+			{"25","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","s62","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","61","err","err","err"},
+			{"26","err","err","err","err","err","s21","s22","s23","s24","s25","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","s27","err","err","err","err","err","err","63","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","26"},
+			{"27","err","err","err","err","err","r74","r74","r74","r74","r74","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","r74","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err"},
+			{"28","err","err","err","s6","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","64","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err"},
+			{"29","err","err","err","s10","err","err","err","err","err","err","err","err","s11","s12","err","s17","err","err","err","err","s18","err","err","s19","s16","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","65","9","13","14","15","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err"},
+			{"30","r4","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err"},
+			{"31","err","err","s66","s10","err","err","err","err","err","err","err","err","s11","s12","err","s17","err","err","err","err","s18","err","err","s19","s16","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","67","13","14","15","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err"},
+			{"32","err","err","err","s47","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","s56","s55","s53","s54","s34","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","68","err","err","48","69","70","52","51","50","49","71","err","err","err","err","err","err"},
+			{"33","err","err","err","s47","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","72","err","err","err","err","err","err","err","err","err","err","err"},
+			{"34","err","err","err","r68","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","r68","r68","r68","r68","r68","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err"},
+			{"35","err","err","err","s47","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","s56","s55","s53","s54","s34","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","73","err","err","err","75","err","76","52","51","50","49","74","err","err","err","err","err","err"},
+			{"36","r20","err","err","err","err","err","err","err","err","err","err","err","err","err","r20","r20","err","r20","r20","err","err","err","err","err","err","r20","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err"},
+			{"37","","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","s77","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err"},
+			{"38","r22","err","err","err","err","err","err","err","err","err","err","err","err","err","r22","r22","err","r22","r22","err","err","err","err","err","err","r22","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err"},
+			{"39","r23","err","err","err","err","err","err","err","err","err","err","err","err","err","r23","r23","err","r23","r23","err","err","err","err","err","err","r23","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err"},
+			{"40","s79","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","s78","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err"},
+			{"41","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","s80","err","err","err","err","err","err","r41","r41","r41","r41","r41","r41","r41","r41","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err"},
+			{"42","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","s81","s82","s83","s84","s85","s86","s87","s88","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err"},
+			{"43","err","err","err","s47","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","s56","s55","s53","s54","s34","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","89","err","46","42","err","48","90","45","52","51","50","49","43","err","err","err","err","err","err"},
+			{"44","r39","err","err","err","err","err","err","err","err","err","err","err","err","err","r39","r39","err","r39","r39","err","err","err","err","err","err","r39","r42","r42","r42","r42","r42","r42","r42","r42","err","r39","r39","r39","r39","r39","r39","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err"},
+			{"45","r40","err","err","err","err","err","err","err","err","err","err","err","err","err","r40","r40","err","r40","r40","err","err","err","err","err","err","r40","r43","r43","r43","r43","r43","r43","r43","r43","err","r40","r40","r40","r40","r40","r40","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err"},
+			{"46","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","s91","s92","s93","s94","s95","s96","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err"},
+			{"47","r59","err","err","err","r59","err","err","err","err","err","err","err","err","err","r59","r59","err","r59","r59","r59","err","err","r59","err","err","r59","r59","r59","r59","r59","r59","r59","r59","r59","err","r59","r59","r59","r59","r59","r59","err","err","err","err","err","r59","s62","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","97","err","err","err"},
+			{"48","r38","err","err","err","err","err","err","err","err","err","err","err","err","err","r38","r38","err","r38","r38","err","err","err","err","err","err","r38","err","err","err","err","err","err","err","err","err","r38","r38","r38","r38","r38","r38","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err"},
+			{"49","r48","err","err","err","r48","err","err","err","err","err","err","err","err","err","r48","r48","err","r48","r48","r48","err","err","r48","err","err","r48","r48","r48","r48","r48","r48","r48","r48","r48","err","r48","r48","r48","r48","r48","r48","err","err","err","err","err","r48","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err"},
+			{"50","r49","err","err","err","r49","err","err","err","err","err","err","err","err","err","r49","r49","err","r49","r49","r49","err","err","r49","err","err","r49","r49","r49","r49","r49","r49","r49","r49","r49","err","r49","r49","r49","r49","r49","r49","err","err","err","err","err","r49","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err"},
+			{"51","r50","err","err","err","r50","err","err","err","err","err","err","err","err","err","r50","r50","err","r50","r50","r50","err","err","r50","err","err","r50","r50","r50","r50","r50","r50","r50","r50","r50","err","r50","r50","r50","r50","r50","r50","err","err","err","err","err","r50","err","err","s99","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","98","err"},
+			{"52","r51","err","err","err","r51","err","err","err","err","err","err","err","err","err","r51","r51","err","r51","r51","r51","err","err","r51","err","err","r51","r51","r51","r51","r51","r51","r51","r51","r51","err","r51","r51","r51","r51","r51","r51","err","err","err","err","err","r51","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err"},
+			{"53","r66","err","err","err","r66","err","err","err","err","err","err","err","err","err","r66","r66","err","r66","r66","r66","err","err","r66","err","err","r66","r66","r66","r66","r66","r66","r66","r66","r66","err","r66","r66","r66","r66","r66","r66","err","err","err","err","err","r66","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err"},
+			{"54","r67","err","err","err","r67","err","err","err","err","err","err","err","err","err","r67","r67","err","r67","r67","r67","err","err","r67","err","err","r67","r67","r67","r67","r67","r67","r67","r67","r67","err","r67","r67","r67","r67","r67","r67","err","err","err","err","err","r67","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err"},
+			{"55","r64","err","err","err","r64","err","err","err","err","err","err","err","err","err","r64","r64","err","r64","r64","r64","err","err","r64","err","err","r64","r64","r64","r64","r64","r64","r64","r64","r64","err","r64","r64","r64","r64","r64","r64","err","s55","err","err","err","r64","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","100","err","err","err","err","err","err","err","err"},
+			{"56","r62","err","err","err","r62","err","err","err","err","err","err","err","err","err","r62","r62","err","r62","r62","r62","err","err","r62","err","err","r62","r62","r62","r62","r62","r62","r62","r62","r62","r62","r62","r62","r62","r62","r62","r62","s56","","err","err","err","r62","err","r62","r62","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","101","err","err","err","err","err","err","err","err","err"},
+			{"57","err","err","err","s47","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","s56","s55","s53","s54","s34","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","102","err","46","42","err","48","44","45","52","51","50","49","43","err","err","err","err","err","err"},
+			{"58","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","s103","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err"},
+			{"59","err","err","err","err","err","err","err","err","err","err","s104","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err"},
+			{"60","err","err","err","s59","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","s34","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","105","err","err","err","err","err","err","err","60","err","err","err","err","err","err"},
+			{"61","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","s56","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","106","err","err","err","err","err","err","err","err","err"},
+			{"62","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","r71","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err"},
+			{"63","r14","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err"},
+			{"64","err","err","err","err","err","r7","r7","r7","r7","r7","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","r7","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err"},
+			{"65","s107","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err"},
+			{"66","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","r3","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err"},
+			{"67","r16","err","err","err","err","err","err","err","err","err","err","err","err","err","r16","r16","err","r16","r16","err","err","err","err","err","err","r16","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err"},
+			{"68","r17","err","err","err","err","err","err","err","err","err","err","err","err","err","r17","r17","err","r17","r17","err","err","err","err","err","err","r17","err","err","err","err","err","err","err","err","err","s91","s92","s93","s94","s95","s96","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err"},
+			{"69","r39","err","err","err","err","err","err","err","err","err","err","err","err","err","r39","r39","err","r39","r39","err","err","err","err","err","err","r39","err","err","err","err","err","err","err","err","err","r39","r39","r39","r39","r39","r39","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err"},
+			{"70","r40","err","err","err","err","err","err","err","err","err","err","err","err","err","r40","r40","err","r40","r40","err","err","err","err","err","err","r40","err","err","err","err","err","err","err","err","err","r40","r40","r40","r40","r40","r40","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err"},
+			{"71","err","err","err","s47","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","s56","s55","s53","s54","s34","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","46","err","err","48","108","70","52","51","50","49","71","err","err","err","err","err","err"},
+			{"72","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","s110","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","109","err","err","err","err","err"},
+			{"73","err","err","err","err","s112","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","111","err","err","err","err"},
+			{"74","err","err","err","s47","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","s56","s55","s53","s54","s34","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","113","","err","err","75","err","76","52","51","50","49","74","err","err","err","err","err","err"},
+			{"75","r44","err","err","err","r44","err","err","err","err","err","err","err","err","err","r44","r44","err","r44","r44","r44","err","err","r44","err","err","r44","r44","r44","r44","r44","r44","r44","r44","r44","err","r44","r44","r44","r44","r44","r44","err","err","err","err","err","r44","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err"},
+			{"76","r45","err","err","err","r45","err","err","err","err","err","err","err","err","err","r45","r45","err","r45","r45","r45","err","err","r45","err","err","r45","r45","r45","r45","r45","r45","r45","r45","r45","err","r45","r45","r45","r45","r45","r45","err","err","err","err","err","r45","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err"},
+			{"77","err","err","err","s10","err","err","err","err","err","err","err","err","s11","s12","err","s17","err","err","err","err","s18","err","err","s19","s16","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","114","9","13","14","15","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err"},
+			{"78","err","err","err","s47","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","s56","s55","s53","s54","s34","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","115","err","46","42","","48","44","45","52","51","50","49","43","err","err","err","err","err","err"},
+			{"79","err","err","err","s10","err","err","err","err","err","err","err","err","s11","s12","err","s17","err","err","err","err","s18","err","err","s19","s16","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","67","13","14","15","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err"},
+			{"80","err","err","err","s10","err","err","err","err","err","err","err","err","s11","s12","err","s17","err","err","err","err","s18","err","err","s19","s16","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","116","9","13","14","15","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err"},
+			{"81","err","err","err","s47","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","s56","s55","s53","s54","s34","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","117","err","err","err","75","","76","52","51","50","49","74","err","err","err","err","err","err"},
+			{"82","err","err","err","s47","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","s56","s55","s53","s54","s34","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","118","err","err","err","75","","76","52","51","50","49","74","err","err","err","err","err","err"},
+			{"83","err","err","err","s47","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","s56","s55","s53","s54","s34","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","119","err","err","err","75","","76","52","51","50","49","74","err","err","err","err","err","err"},
+			{"84","err","err","err","s47","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","s56","s55","s53","s54","s34","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","120","err","err","err","75","","76","52","51","50","49","74","err","err","err","err","err","err"},
+			{"85","err","err","err","s47","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","s56","s55","s53","s54","s34","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","121","err","err","err","75","","76","52","51","50","49","74","err","err","err","err","err","err"},
+			{"86","err","err","err","s47","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","s56","s55","s53","s54","s34","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","122","err","err","err","75","","76","52","51","50","49","74","err","err","err","err","err","err"},
+			{"87","err","err","err","s47","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","s56","s55","s53","s54","s34","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","123","err","err","err","75","","76","52","51","50","49","74","err","err","err","err","err","err"},
+			{"88","err","err","err","s47","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","s56","s55","s53","s54","s34","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","124","err","err","err","75","","76","52","51","50","49","74","err","err","err","err","err","err"},
+			{"89","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","r41","r41","r41","r41","r41","r41","r41","r41","err","err","err","err","err","err","err","err","err","err","err","err","s110","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","125","err","err","err","err","err"},
+			{"90","r39","err","err","err","err","err","err","err","err","err","err","err","err","err","r39","r39","err","r39","r39","err","err","err","err","err","err","r39","r42","r42","r42","r42","r42","r42","r42","r42","err","r39","r39","r39","r39","r39","r39","err","err","err","err","err","s110","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","126","err","err","err","err","err"},
+			{"91","err","err","err","s47","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","s56","s55","s53","s54","s34","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","127","err","err","err","75","err","76","52","51","50","49","74","err","err","err","err","err","err"},
+			{"92","err","err","err","s47","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","s56","s55","s53","s54","s34","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","128","err","err","err","75","err","76","52","51","50","49","74","err","err","err","err","err","err"},
+			{"93","err","err","err","s47","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","s56","s55","s53","s54","s34","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","129","err","err","err","75","err","76","52","51","50","49","74","err","err","err","err","err","err"},
+			{"94","err","err","err","s47","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","s56","s55","s53","s54","s34","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","130","err","err","err","75","err","76","52","51","50","49","74","err","err","err","err","err","err"},
+			{"95","err","err","err","s47","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","s56","s55","s53","s54","s34","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","131","err","err","err","75","err","76","52","51","50","49","74","err","err","err","err","err","err"},
+			{"96","err","err","err","s47","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","s56","s55","s53","s54","s34","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","132","err","err","err","75","err","76","52","51","50","49","74","err","err","err","err","err","err"},
+			{"97","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","s56","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","133","err","err","err","err","err","err","err","err","err"},
+			{"98","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","s56","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","134","err","err","err","err","err","err","err","err","err"},
+			{"99","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","r73","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err"},
+			{"100","r65","err","err","err","r65","err","err","err","err","err","err","err","err","err","r65","r65","err","r65","r65","r65","err","err","r65","err","err","r65","r65","r65","r65","r65","r65","r65","r65","r65","err","r65","r65","r65","r65","r65","r65","err","err","err","err","err","r65","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err","err"},
+			tab(1),tab(2),tab(3),tab(4),tab(5),tab(6),tab(7),tab(8),tab(9),tab(10),tab(11),tab(12),tab(13),tab(14),tab(15),tab(16),tab(17),tab(18),tab(19),tab(20),tab(21),tab(22),tab(23),tab(24),tab(25),tab(26),tab(27),tab(28),tab(29),tab(30),tab(31),tab(32),tab(33),tab(34),tab(35),tab(36),tab(37),tab(38),tab(39),tab(40),tab(41),tab(42),tab(43),tab(44),tab(45),tab(46),tab(47),tab(48),tab(49),tab(50),tab(51)};
+	public Stack<String> stackState = new Stack<>();
+
+    public Stack<String> analyse = new Stack<>();
+
+    public Stack<String> stackSymbol = new Stack<>();
+
+    public String strInput;
+
+    public String action = "";
+    String val;
+    int index = 0;
+
+
+	 public void analyzeSLnew(String[] tt) {
+		 	
+	        action = "";
+	        index = 0;
+
+	        analyse.push("0");
+
+	        System.out.println("               ********pile  Entree  Action ********");
+	        this.AfficherSLRnew(tt);
+	        
+	        while (index <tt.length)
+
+	        {
+
+	            String s = analyse.peek();
+	            if(index!=0 &&( isOp(tt[index - 1]) || tt[index - 1]=="." || tt[index - 1]=="nb" || tt[index - 1]=="litt" || tt[index - 1]=="de" ||tt[index - 1]=="à" || tt[index - 1]=="[" || tt[index - 1]==",") && isNotKey(tt[index]) )
+	            {
+	            	boolean cot=false;
+	            	
+	            		if(tt[index].charAt(0)=='.' && tt[index].length()>1)
+	            		{
+	            			
+	            				tt[index]=tt[index].substring(1);
+	            				tt=dec(tt ,index ,".");
+	            				
+	            			
+	            		}
+	            	
+	            	
+	            		val=isVal(tt[index].charAt(0),cot);
+	            		if(val!=null)
+	            		{
+	            			if(val=="id")
+	            			{
+	            				tt[index]=val;
+	            			}
+	            			else
+	            			{
+	            				if(tt[index].length()>1)
+		            			{
+		            				tt[index]=tt[index].substring(1);
+		            				tt=dec(tt ,index ,val);
+		            				
+		            			}
+		            			else
+		            			
+		            				tt[index]=val;
+	            			}
+	            			
+	            				
+        				
+	            		
+	            		}
+	            	
+	            	
+	            }
+	           
+
+	            if (Action(s,tt[index]).charAt(0) == 's') {
+	                analyse.push(tt[index]);
+	                analyse.push(Action(s,tt[index]).substring(1));
+	                index++;
+	                action = "shift ";
+
+	                AfficherSLRnew(tt);
+	            }
+	            // Réduction
+	            else if (Action(s,tt [index]).charAt(0) == 'r') {
+	                String str = LRGS[Integer.parseInt(Action(s, tt[index]).substring(1)) ];
+	                //int pos = str.indexOf('>');
+	                
+	                String tabparties[] = str.split("->");
+
+	                String Partiegauche = tabparties[0];
+
+	                String Partiedroite = tabparties[1];
+
+	                String tabtoken[] = Partiedroite.split(" ");
+	                int taillepile = 2 * tabtoken.length;
+
+	                for (int i = 0; i < taillepile; i++) {
+
+	                    analyse.pop();
+
+	                }
+	                String sommetpile = analyse.peek();
+	                analyse.push(Partiegauche);
+	                
+	                
+
+	                analyse.push(Action(sommetpile, Partiegauche));
+
+	                action = "reduce :" + str;
+	                AfficherSLRnew(tt);
+	            }
+	            // acceptation
+	            else if (Action(s, tt[index]) == "acc") {
+	                System.out.println("analyze SLR successfully");
+	                break;
+	            }
+
+	            else
+	            // erreur
+	            {
+	                System.out.println("analyze SLR failled");
+	                break;
+	            }
+
+	        }
+
+	    }
+
+	    public String Action(String s, String a) {
+	        for (int i = 1; i < 153; i++)
+	            if (tableSLR[i][0].equals(s))   
+	                for (int j = 1; j < 83; j++)
+	                
+	                    if (tableSLR[0][j].equals(a))
+	                   
+	                       return tableSLR[i][j];
+	                    
+	        return "err";
+	    }
+
+
+	    public void AfficherSLRnew(String[] tt) {
+	        // SLR
+
+	        String ss = "-------";
+	        String ss1 = "-------";
+	        int taillepile = analyse.size();
+	        int taillepilediv2 = taillepile / 2;
+	        for (int i = 0; i < taillepilediv2; i++)
+	            ss = ss + "-------";
+	        int tailleinput = tt.length;
+	        for (int i = 0; i < tailleinput; i++)
+	            ss1 = ss1 + "-------";
+
+	        strInput = "";
+	        for (int i = index; i <tt.length; i++)
+	            strInput = strInput + tt[i] ;
+
+	        System.out.printf("%s", analyse + ss1);
+	        System.out.printf("%s", strInput + ss);
+	        System.out.printf("%s", action);
+	        System.out.println();
+	    }
+	    
+	    public String isVal(char s , boolean b) {
+	    	
+	    	if(s=='\"')
+	    	{
+	    		if(b)
+	    		b=false;
+	    		else
+	    		b=true;
+	    	}
+	    	
+	    	if(b)
+	    	{
+	    		return "litt";
+	    	}
+	    	
+	    	if(Character.isDigit(s))
+	    	{
+	    		return "nb";
+	    	}
+	    	if(Character.isLetter(s))
+	    	{
+	    		return "id";
+	    	}
+			return null;
+	    	
+	    }
+	    public boolean isOp(String s)
+	    {
+	    	
+	    	String [] op = {"<-","=","<","<=",">",">=","<>","+","-","/","*","div","mod"};
+	    	for(int i=0;i<op.length;i++)
+	    	{
+	    		if(op[i]==s)
+	    			return true;
+	    	}
+	    	return false;
+	    	
+	    }
+	    
+	    public boolean isNotKey(String s)
+	    {
+	    	String [] key = {"nb","id","vrai","faux","alors","faire","si","pour","tantque","repeter","à","litt","finp","fintq","jusqu'a","entier","caractere","booleen","reel"};
+	    	for(int i=0;i<key.length;i++)
+	    	{
+	    		if(key[i]==s)
+	    			return false;
+	    	}
+	    	return true;
+	    }
+	    
+	    public String [] dec(String [] t , int i , String val)
+	    {
+	    	String t1[] = new String[t.length+1];
+	    	for(int j=0;j<i;j++)
+			{
+				t1[j]=t[j];
+			}
+	    	t1[i]=val;
+	    	for(int j=i+1;j<=t.length;j++)
+			{
+				t1[j]=t[j-1];
+			}
+	    	
+	    	return t1;
+	    }
+
+}

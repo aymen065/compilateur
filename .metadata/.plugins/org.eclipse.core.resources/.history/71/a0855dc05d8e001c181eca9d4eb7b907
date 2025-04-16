@@ -1,0 +1,11 @@
+package compilateur;
+
+import java.util.Stack;
+
+public class Dds {
+public String NT;
+public Stack<String> pileType = new Stack<>();
+public Stack<String> pileVal = new Stack<>();
+
+
+}

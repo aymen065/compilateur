@@ -1,0 +1,159 @@
+package compilateur;
+
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.util.ArrayList;
+
+public class Main {
+
+	public static void main(String[] args) throws Exception  {
+		System.out.println("***********************Affichage du mot accepte a partir du fichier ***");
+
+		File doc = new File("C:\\Users\\HP\\Desktop\\gl3\\programme.txt");
+
+		BufferedReader obj = new BufferedReader(new FileReader(doc));
+
+		ArrayList<String> temp = new ArrayList<String>();
+		String line;
+		ArrayList<String> tabMot = new ArrayList<String>();
+		ArrayList<String> pLine = new ArrayList<String>();
+		int p=0;
+		while ((line = obj.readLine()) != null) {
+			p++;
+			// REMPLIR TT
+			temp.add(line);
+			String[] parts = line.split(" ");
+			for(int i=0;i<parts.length;i++)
+			{
+				tabMot.add(parts[i]);
+				pLine.add(Integer.toString(p));
+			}
+		}
+		ArrayList<String> t2 = new ArrayList<String>();
+		String tt[] = new String[tabMot.size()+1];
+		System.out.println(tabMot);
+		for (int i = 0; i < tabMot.size(); i++)
+		{
+			
+			t2.add(tabMot.get(i));
+			while(t2.get(i).charAt(0)=='\t')
+			{
+				String aux;
+				if(t2.get(i).length()>1)
+				{
+					aux=t2.get(i);
+					t2.remove(i);
+					t2.add(aux.substring(1));
+				}
+			}
+			
+			
+		}
+		String t[] = new String[temp.size()];
+
+		for (int j = 0; j < temp.size(); j++) {
+			t[j] = temp.get(j);
+		}
+
+		System.out.println("***********************Analyse lexical*********************************");
+
+		ArrayList<String> tab = new ArrayList<String>();
+		ArrayList<String> tabId = new ArrayList<String>();
+		
+		Scanner anaLex = new Scanner("C:\\Users\\HP\\Desktop\\gl3\\programme.txt");
+
+		UniteLexicale ul;
+		ArrayList<String> errLex = new ArrayList<String>();
+		ArrayList<String> errLine = new ArrayList<String>();
+		
+		do {
+			ul = anaLex.lexemeSuivant();
+			if(ul.getCategorie()==Categorie.ERR)
+			{
+				
+				for(int i=0;i<tabMot.size();i++)
+				{
+					
+					if(tabMot.get(i).contains(ul.getLexeme()))
+					{
+						errLex.add("erreur : caractère inconnu \""+ul.getLexeme()+"\" dans "+tabMot.get(i));
+						errLine.add(pLine.get(i));
+						
+					}
+				}
+				
+				
+			}
+			tab.add(ul.toString());
+			
+			if(ul.getCategorie()==Categorie.ID)
+			{
+				tabId.add(ul.getLexeme());
+			}
+
+		} while (ul.getCategorie() != Categorie.EOF);
+
+		for (int i = 0; i < tab.size(); i++)
+			System.out.println(" " + tab.get(i));
+		
+		System.out.println(t2);
+		
+		/*for (int i = 0; i < tabMot.size(); i++)
+		{
+			tt[i]=tabMot.get(i);
+		}
+		for (int i = 0; i < tt.length; i++)
+			System.out.println(tt[i]);
+		tt[tabMot.size()]="$";*/
+		System.out.println(tabMot);
+		for (int i = 0; i <errLine.size(); i++)
+			System.out.println("ligne "+errLine.get(i)+" "+errLex.get(i));
+		obj.close();
+		if(errLine.size()<1)
+			 System.out.println("la vérification lexicale a été effectuèe avec succès");
+		
+		Thread.sleep(7000);
+		System.out.println("\n***********************Analyse Syntaxique*****************************");
+		//String tt[] = { "id", "entier",";","id","reel",";","debut", "si", "bb","=", "\"aymen\"","alors", "id", "<-" , "id" ,"+","nb",";" , "id" , "<-" , "405", "si" , "non" ,  "id" , "<-" , "vrai", "finsi" , ";" , "fin", "$" };
+		/*String tt[] = { 
+				
+				
+						"i", "," ,"j" , "entier" , ";" ,
+						"r" , "reel" , ";" ,
+						"bool" , "booleen" , ";" ,
+						"s" , "caractere" , ";" ,
+						"t" , "tab" ,"[","100","]","de","entier", ";",
+						"debut" ,
+								"y","<-","0",";",
+								"pour" , "i", "de", "0", "a","70","faire",
+								"j","<-", "j","+","1",
+								"finp", ";",
+								"s", "<-" , "\"a\"" ,";",
+								"lire","(","t","[","0","]",")",";",
+								"lire","(","t","[","1","]",")",";",
+								"lire","(","t","[","2","]",")",";",
+								
+								"si" , "t","[","0","]" , "=" , "j" , "alors" ,
+									"ecrire","(","t","[","0","]",",","\"la première case du tableau t est égale à j\"",")",
+								"si" ,"non",
+									"si" , "t","[","1","]" , "=" , "j" , "alors" ,
+										"ecrire","(","t","[","1","]",",","\"la première case du tableau t est égale à j\"",")",
+									"si" ,"non",
+										"si" , "t","[","2","]" , "=" , "j" , "alors" ,
+											"ecrire","(","t","[","2","]",",","\"la première case du tableau t est égale à j\"",")",
+										"finsi",
+									"finsi",
+									
+								"finsi", ";",
+								
+						"fin",
+						
+		
+		"$" };
+		
+		Parser test22 = new Parser();
+		test22.analyzeSLnew(tt) ;*/
+		
+	}
+}

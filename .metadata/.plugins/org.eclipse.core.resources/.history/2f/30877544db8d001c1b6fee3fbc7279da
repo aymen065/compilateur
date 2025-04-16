@@ -1,0 +1,8 @@
+package compilateur;
+
+public class Dds {
+public Object val;
+public String type;
+public Stack<String> stackState = new Stack<>();
+
+}

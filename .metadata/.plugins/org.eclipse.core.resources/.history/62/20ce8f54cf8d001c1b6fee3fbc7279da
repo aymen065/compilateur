@@ -1,0 +1,177 @@
+package compilateur;
+
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.util.ArrayList;
+
+public class Main {
+	
+	public static ArrayList<String> errSem = new ArrayList<String>();
+	public static void main(String[] args) throws Exception  {
+		boolean sem =false;
+		System.out.println("********************************Affichage du mot accepte a partir du fichier ******************************************************");
+
+		File doc = new File("C:\\Users\\HP\\Desktop\\gl3\\programme.txt");
+
+		BufferedReader obj = new BufferedReader(new FileReader(doc));
+
+		ArrayList<String> temp = new ArrayList<String>();
+		String line;
+		ArrayList<String> tabMot = new ArrayList<String>();
+		ArrayList<String> pLine = new ArrayList<String>();
+		int p=0;
+		while ((line = obj.readLine()) != null) {
+			p++;			
+			temp.add(line);
+			String[] parts = line.split(" ");
+			for(int i=0;i<parts.length;i++) {
+				System.out.println(parts[i]);
+			}
+			for(int i=0;i<parts.length;i++)
+			{
+				tabMot.add(parts[i]);
+				
+				if(tabMot.get(i).contains("(") && tabMot.get(i).length()>1)
+				{
+					pLine.add(Integer.toString(p));
+					if(tabMot.get(i).contains("["))
+					{
+						pLine.add(Integer.toString(p));
+						pLine.add(Integer.toString(p));
+						//pLine.add(Integer.toString(p));
+						
+					}
+					/*if(tabMot.get(i).contains("]"))
+					{
+						pLine.add(Integer.toString(p));
+						
+					}*/
+					pLine.add(Integer.toString(p));
+					//pLine.add(Integer.toString(p));
+					
+				}
+				else if( tabMot.get(i).contains("[") || tabMot.get(i).contains("]"))
+				{
+					//System.out.println("22222222222222222222222222222");
+					pLine.add(Integer.toString(p));
+					pLine.add(Integer.toString(p));
+					pLine.add(Integer.toString(p));
+					//pLine.add(Integer.toString(p));
+					
+				
+				}
+				if(tabMot.get(i).indexOf("[")!=-1)
+					System.out.println("22222222222222222222222222222");
+				pLine.add(Integer.toString(p));
+			}
+		}
+		ArrayList<String> t2 = new ArrayList<String>();
+		System.out.println("*************************************Analyse lexical*************************************************");
+
+		ArrayList<String> tab = new ArrayList<String>();
+		ArrayList<String> tabId = new ArrayList<String>();
+		
+		Scanner anaLex = new Scanner("C:\\Users\\HP\\Desktop\\gl3\\programme.txt");
+
+		UniteLexicale ul;
+		ArrayList<String> errLex = new ArrayList<String>();
+		ArrayList<String> errLine = new ArrayList<String>();
+		
+		int u=0;
+		do {
+			ul = anaLex.lexemeSuivant();
+			u++;
+			if(ul.getCategorie()==Categorie.ERR)
+			{
+				u--;
+				for(int i=0;i<tabMot.size();i++)
+				{
+					
+					if(tabMot.get(i).contains(ul.getLexeme()))
+					{
+						
+						errLex.add("erreur : caractère inconnu \""+ul.getLexeme()+"\" dans "+tabMot.get(i));
+						errLine.add(pLine.get(i));
+						anaLex.caractereSuivant();
+					}
+				}
+				
+				
+			}
+			tab.add(ul.toString());
+			t2.add(ul.getLexeme());
+			if(ul.getLexeme().contains("debut"))
+			{
+				sem=true;
+			}
+			if(ul.getCategorie()==Categorie.ID)
+			{
+				
+				if(!isInId(tabId,ul) && !sem)
+				{
+					
+					//System.out.println(ul.getLexeme());
+					tabId.add(ul.getLexeme());
+				}
+				if(!isInId(tabId,ul))
+				{
+					errSem.add("erreur sémantique ligne "+pLine.get(u)+" :  "+ul.getLexeme()+" n\'est pas déclaré ");
+				}
+				
+				
+			}
+
+		} while (ul.getCategorie() != Categorie.EOF);
+		
+		String tt[] = new String[t2.size()+1];
+		for (int i = 0; i < t2.size(); i++)
+		{
+			tt[i]=t2.get(i);
+		}
+		
+		for (int i = 0; i < tab.size(); i++)
+			System.out.println(" " + tab.get(i));
+		
+
+		
+		if(errLine.size()>=1)
+		{
+			System.out.println("\n\n\n\n\n!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!         Attention        !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n\n\n");
+			int n=errLine.size();
+		for (int i = 0; i <n; i++)
+			System.out.println("ligne "+errLine.get(i)+" "+errLex.get(i));
+		System.out.println("\n\n\n\n\n");
+		}
+		
+		else
+			 System.out.println("la vérification lexicale a été effectuèe avec succès");
+		
+		Thread.sleep(5000);
+		System.out.println("\n***********************Analyse Syntaxique*****************************");
+		
+		
+		Parser par = new Parser();
+		par.analyzeSLnew(tt , pLine ) ;
+		for(int i=0; i<par.errTab.size();i++)
+			System.out.println(par.errTab.get(i));
+		for (int i = 0; i <errSem.size(); i++)
+			System.out.println(errSem.get(i));
+		for (int i = 0; i <pLine.size(); i++)
+			System.out.println(pLine.get(i));
+		obj.close();
+		
+	}
+	 public static boolean isInId(ArrayList<String> t , UniteLexicale u)
+	    {
+	    	for(int i=0;i<t.size();i++)
+	    	{
+	    		if(t.get(i).contains(u.getLexeme()))
+	    			return true;
+	    	}
+	    	return false;
+	    }
+	 
+	 
+	 
+}

@@ -1,0 +1,1272 @@
+package compilateur;
+
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+
+public class Scanner {
+	private ArrayList<Character> fluxCaracteres;
+    private int indiceCourant;
+    public char caractereCourant;
+    private boolean eof ;
+	
+    public Scanner() {
+        this("");
+    }
+    
+    public Scanner(String nomFich) {
+        BufferedReader f=null;
+        int car=0;
+        fluxCaracteres=new ArrayList<Character>();
+        indiceCourant=0;
+        eof=false;
+        try {
+            f=new BufferedReader(new FileReader(nomFich));
+        }
+        catch(IOException e) {
+            System.out.println("taper votre texte ci-dessous (ctrl+z pour finir)");
+            f=new BufferedReader(new InputStreamReader(System.in));
+
+
+        }
+
+        try {
+            while((car=f.read())!=-1)
+                fluxCaracteres.add((char)car);
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+    }
+    
+    public void caractereCourant() {
+        if(indiceCourant<fluxCaracteres.size())
+            caractereCourant=fluxCaracteres.get(indiceCourant);
+        else
+            eof=true;
+    }
+    public void caractereSuivant() {
+        if(indiceCourant<fluxCaracteres.size())
+            caractereCourant=fluxCaracteres.get(indiceCourant++);
+        else
+            eof=true;
+    }
+
+    public void reculer(int i) {
+    	for(int j=0;j<i;j++)
+    	{
+        if(indiceCourant>0)
+        {
+        	indiceCourant--;
+        	
+        }
+    	}   
+        
+    }
+
+    public UniteLexicale lexemeSuivant() {
+        caractereSuivant();
+
+        while(eof || Character.isWhitespace(caractereCourant) ) {
+            if (eof)
+                return new UniteLexicale(Categorie.EOF, "$");
+            caractereSuivant();
+        }
+
+        if(caractereCourant==';')
+            return new UniteLexicale(Categorie.PV, ";");
+        
+        if(caractereCourant=='[')
+    	{
+		return new UniteLexicale(Categorie.ACO, "[");
+    	}
+        
+        
+        if(caractereCourant==']')
+    	{
+		return new UniteLexicale(Categorie.ACF, "]");
+    	}
+        
+        if(caractereCourant=='(')
+    	{
+		return new UniteLexicale(Categorie.PO, "(");
+    	}
+        
+        if(caractereCourant==')')
+    	{
+		return new UniteLexicale(Categorie.PF, ")");
+    	}
+        
+        if(caractereCourant=='^')
+    	{
+		return new UniteLexicale(Categorie.CHAP, "^");
+    	}
+        
+        if(caractereCourant=='+')
+    	{
+		return new UniteLexicale(Categorie.OPPARI, "+");
+    	}
+        if(caractereCourant=='-')
+    	{
+		return new UniteLexicale(Categorie.OPPARI, "-");
+    	}
+        if(caractereCourant=='*')
+    	{
+		return new UniteLexicale(Categorie.OPPARI, "*");
+    	}
+        if(caractereCourant=='/')
+    	{
+		return new UniteLexicale(Categorie.OPPARI, "/");
+    	}
+        if(caractereCourant=='.')
+    	{
+		return new UniteLexicale(Categorie.PT, ".");
+    	}
+        if(caractereCourant==',')
+    	{
+		return new UniteLexicale(Categorie.VIRG, ",");
+    	}
+        
+        if(caractereCourant=='a')
+        {
+                caractereSuivant();
+                if(caractereCourant=='l')
+                    { 
+                        caractereSuivant();
+                        if(caractereCourant=='o')
+                        {
+                            caractereSuivant();
+                            if(caractereCourant=='r')
+                            {
+                                caractereSuivant();
+                                if(caractereCourant=='s')
+                                {
+                                	return new UniteLexicale(Categorie.MotCle, "alors");
+                                	
+                                }
+                                else
+                                {
+                                	reculer(5);
+                                	caractereCourant();
+                                	caractereSuivant();
+                                	return getID();
+                                }
+                            }
+                            else
+                            {
+                            	reculer(4);
+                            	caractereCourant();
+                            	caractereSuivant();
+                            	return getID();
+                            }
+                        }
+                        else
+                        {
+                        	reculer(3);
+                        	caractereCourant();
+                        	caractereSuivant();
+                        	return getID();
+                        }
+                    }
+                else if(eof || Character.isWhitespace(caractereCourant))
+                {
+                	return new UniteLexicale(Categorie.MotCle, "a");
+                }
+
+                else
+                {
+                	reculer(2);
+                	caractereCourant();
+                	caractereSuivant();
+                	return getID();
+                }
+           
+        } 
+        
+        
+        
+        
+        
+        
+        
+        
+        if(caractereCourant=='r')
+        {
+            caractereSuivant();
+            if(caractereCourant=='e')
+            {
+            	caractereSuivant();
+            	if(caractereCourant=='e')
+            	{
+            		caractereSuivant();
+                	if(caractereCourant=='l')
+                	{
+                		caractereSuivant();
+                		if(eof || Character.isWhitespace(caractereCourant) || caractereCourant==';')
+                			return new UniteLexicale(Categorie.TYPE, "reel");
+                		else
+                        {
+                    		
+                    		reculer(5);          
+                        	caractereCourant();
+                        	caractereSuivant();
+                        	return getID();
+                        }
+                	}
+                	else
+                    {
+                		
+                		reculer(4);          
+                    	caractereCourant();
+                    	caractereSuivant();
+                    	return getID();
+                    }
+            	}
+            	else if(caractereCourant=='p')
+            	{
+            		caractereSuivant();
+                	if(caractereCourant=='e')
+                	{
+                		caractereSuivant();
+                		if(caractereCourant=='t')
+                    	{
+                    		caractereSuivant();
+                        	if(caractereCourant=='e')
+                        	{
+                        		caractereSuivant();
+                            	if(caractereCourant=='r')
+                            	{
+                            		caractereSuivant();
+                            		if(eof || Character.isWhitespace(caractereCourant))
+                            			return new UniteLexicale(Categorie.MotCle, "repeter");
+                            		else
+                                    {
+                                		reculer(8);                           		
+                                    	caractereCourant();
+                                    	caractereSuivant();
+                                    	return getID();
+                                    }
+                            	}
+                            	else
+                                {
+                            		reculer(7);                           		
+                                	caractereCourant();
+                                	caractereSuivant();
+                                	return getID();
+                                }
+                        	}
+                        	else
+                            {
+                        		reculer(6);                     		
+                            	caractereCourant();
+                            	caractereSuivant();
+                            	return getID();
+                            }
+                    	}
+                		else
+                        {
+                			reculer(5);                			
+                        	caractereCourant();
+                        	caractereSuivant();
+                        	return getID();
+                        }
+                	}
+                	else
+                    {
+                		reculer(4);               		
+                    	caractereCourant();
+                    	caractereSuivant();
+                    	return getID();
+                    }
+            	}
+            	else
+                {
+            		reculer(3);
+            		caractereCourant();
+            		caractereSuivant();
+                	return getID();
+                }
+            }
+            else
+            {
+            	reculer(2);
+            	caractereCourant();
+            	caractereSuivant();
+            	return getID();
+            }
+            
+        }
+       
+        
+        
+       
+        
+       
+        if(caractereCourant=='s')
+        {
+            caractereSuivant();
+            if(caractereCourant=='i')
+            {
+                caractereSuivant();
+                if(caractereCourant=='(')
+                {
+                	return new UniteLexicale(Categorie.MotCle, "si");
+                }
+                if(caractereCourant!=' ')
+                {
+                		reculer(3);                		
+                		caractereCourant();
+                		caractereSuivant();
+                    	return getID();
+                    
+                }
+                
+                   return new UniteLexicale(Categorie.MotCle, "si");
+                
+                
+                
+            }
+            else
+            {
+            	reculer(2);
+            	caractereCourant();
+            	caractereSuivant();
+            	return getID();
+            }
+       
+        }
+
+        if(caractereCourant=='n')
+        {
+            caractereSuivant();
+            if (caractereCourant=='o')
+            {
+                caractereSuivant();
+                if (caractereCourant=='n')
+                {
+                return new UniteLexicale(Categorie.MotCle, "non");
+                }
+                else
+                {	
+                	reculer(3);
+            		caractereCourant();
+            		caractereSuivant();
+                	return getID();
+                }
+            }
+            else
+            {	
+            	reculer(2);
+        		caractereCourant();
+        		caractereSuivant();
+            	return getID();
+            }
+        }
+        if(caractereCourant=='v')
+        { 
+            caractereSuivant();
+            if(caractereCourant=='r')
+            {
+                caractereSuivant();
+                if(caractereCourant=='a')
+                {
+                    caractereSuivant();
+                    if(caractereCourant=='i')
+                      return new UniteLexicale(Categorie.BOOL, "vrai");
+                    else
+                    {
+                    	reculer(4);
+                    	caractereCourant();
+                    	caractereSuivant();
+                    	return getID();
+                    }
+                }
+                else
+                {
+                	reculer(3);
+                	caractereCourant();
+                	caractereSuivant();
+                	return getID();
+                }
+            }
+            else
+            {
+            	reculer(2);
+            	caractereCourant();
+            	caractereSuivant();
+            	return getID();
+            }
+        }
+        
+        
+        
+        
+        if(caractereCourant=='f')
+        {
+    	caractereSuivant();
+        if(caractereCourant=='i')
+            { 
+        		caractereSuivant();
+        		if(caractereCourant=='n')
+        		{
+        				caractereSuivant();
+        				
+        				 if(caractereCourant=='s')
+        				{ 
+        						caractereSuivant();
+        						if(caractereCourant=='i')
+        							return new UniteLexicale(Categorie.FIN, "finsi");
+        						else
+                                {
+        							reculer(5);
+                                	caractereCourant();
+                                	caractereSuivant();
+                                	return getID();
+                                }
+        				}
+        				else if(caractereCourant=='p')
+        				{ 
+        							return new UniteLexicale(Categorie.FIN, "finp");
+        				}
+        				else if(caractereCourant=='t')
+        				{ 
+        					caractereSuivant();
+        					if(caractereCourant=='q')
+        							return new UniteLexicale(Categorie.FIN, "fintq");
+        					{
+    							reculer(5);
+                            	caractereCourant();
+                            	caractereSuivant();
+                            	return getID();
+                            }
+        				}
+        				else if(eof || Character.isWhitespace(caractereCourant) )
+         				{ 
+        					reculer(1);
+                        	caractereCourant();
+         							return new UniteLexicale(Categorie.FIN, "fin");
+         				}
+        				else
+                        {
+        					reculer(4);
+                        	caractereCourant();
+                        	caractereSuivant();
+                        	return getID();
+                        }
+        				
+             }
+        		 else
+                 {
+                 	reculer(3);
+                 	caractereCourant();
+                 	caractereSuivant();
+                 	return getID();
+                 }
+        	
+            }
+        	
+        else if (caractereCourant=='a')
+        { 
+                caractereSuivant();
+                if(caractereCourant=='i')
+                {
+                    caractereSuivant();
+                    if(caractereCourant=='r')
+                    {
+                        caractereSuivant();
+                        if(caractereCourant=='e')
+                          return new UniteLexicale(Categorie.MotCle, "faire");
+                        {
+							reculer(5);
+                        	caractereCourant();
+                        	caractereSuivant();
+                        	return getID();
+                        }
+                    }
+                    {
+    					reculer(4);
+                    	caractereCourant();
+                    	caractereSuivant();
+                    	return getID();
+                    }
+                }
+                else if(caractereCourant=='u')
+                {
+                	caractereSuivant();
+                    if(caractereCourant=='x')
+                    	return new UniteLexicale(Categorie.BOOL, "faux");
+                    {
+    					reculer(4);
+                    	caractereCourant();
+                    	caractereSuivant();
+                    	return getID();
+                    }
+                }
+                {
+					
+                	reculer(3);
+                	caractereCourant();
+                	caractereSuivant();
+                	return getID();
+                }
+        }
+
+        
+        
+        else
+        {
+        	reculer(2);
+        	caractereCourant();
+        	caractereSuivant();
+        	return getID();
+        }
+        }
+    			
+            
+        
+        if(caractereCourant=='m')
+        {
+        	caractereSuivant();
+            if(caractereCourant=='o')
+            {
+            	caractereSuivant();
+                if(caractereCourant=='d')
+                	return new UniteLexicale(Categorie.OPPARI, "mod");
+                else
+                {
+                	reculer(3);
+                	caractereCourant();
+                	caractereSuivant();
+                	return getID();
+                }
+            }
+            else
+            {
+            	reculer(2);
+            	caractereCourant();
+            	caractereSuivant();
+            	return getID();
+            }
+            	
+        }
+        
+        
+        
+        
+        
+        
+        
+        
+        if(caractereCourant=='d')
+        {
+                caractereSuivant();
+                if(caractereCourant=='e')
+                    { 
+                        caractereSuivant();
+                        if(caractereCourant=='b')
+                        {
+                            caractereSuivant();
+                            if(caractereCourant=='u')
+                            {
+                            	caractereSuivant();
+                            	if(caractereCourant=='t')
+                            		return new UniteLexicale(Categorie.DEBUT, "debut");
+                            	else
+                                {
+                                	reculer(5);
+                                	caractereCourant();
+                                	caractereSuivant();
+                                	return getID();
+                                }
+                            }
+                            else
+                            {
+                            	reculer(4);
+                            	caractereCourant();
+                            	caractereSuivant();
+                            	return getID();
+                            }
+                                  
+                        }
+                        else if(eof || Character.isWhitespace(caractereCourant) )
+                        {
+                        	reculer(1);
+                        	caractereCourant();
+                        	return new UniteLexicale(Categorie.MotCle, "de");
+                        }
+                        else
+                        {
+                        	reculer(3);
+                        	caractereCourant();
+                        	caractereSuivant();
+                        	return getID();
+                        }
+                    }
+                else if(caractereCourant=='i')
+                {
+                	caractereSuivant();
+                    if(caractereCourant=='v')
+                    	return new UniteLexicale(Categorie.OPPARI, "div ");
+                    else
+                    {
+                    	reculer(3);
+                    	caractereCourant();
+                    	caractereSuivant();
+                    	return getID();
+                    }
+                }
+
+                else
+                {
+                	reculer(2);
+                	caractereCourant();
+                	caractereSuivant();
+                	return getID();
+                }
+           
+        }
+        if(caractereCourant=='l')
+        {
+                caractereSuivant();
+                if(caractereCourant=='i')
+                    { 
+                        caractereSuivant();
+                        if(caractereCourant=='r')
+                        {
+                            caractereSuivant();
+                            if(caractereCourant=='e')
+                                  return new UniteLexicale(Categorie.LECTURE, "lire");
+                            else
+                            {
+                            	reculer(4);
+                            	caractereCourant();
+                            	caractereSuivant();
+                            	return getID();
+                            }
+                        }
+                        else
+                        {
+                        	reculer(3);
+                        	caractereCourant();
+                        	caractereSuivant();
+                        	return getID();
+                        }
+                    }
+
+                else
+                {
+                	reculer(2);
+                	caractereCourant();
+                	caractereSuivant();
+                	return getID();
+                }
+        }
+        
+        
+        if(caractereCourant=='q')
+        { 
+            caractereSuivant();
+            if(caractereCourant=='u')
+            {
+                caractereSuivant();
+                if(caractereCourant=='e')
+                	 return new UniteLexicale(Categorie.MotCle, "que");
+                else
+                {
+                	reculer(3);
+                	caractereCourant();
+                	caractereSuivant();
+                	return getID();
+                }
+            }
+            else
+            {
+            	reculer(2);
+            	caractereCourant();
+            	caractereSuivant();
+            	return getID();
+            }
+        }
+       
+        
+        if(caractereCourant=='t')
+        {
+                caractereSuivant();
+                if(caractereCourant=='a')
+                    { 
+                        caractereSuivant();
+                        if(caractereCourant=='n')
+                        {
+                            caractereSuivant();
+                            if(caractereCourant=='t')
+                            {
+                            	return new UniteLexicale(Categorie.MotCle, "tant");
+                            }
+                            	
+                            else
+                            {
+                            	reculer(4);
+                            	caractereCourant();
+                            	caractereSuivant();
+                            	return getID();
+                            }
+                        }
+                        else if(caractereCourant=='b')
+                        	return new UniteLexicale(Categorie.TYPE, "tab");
+                        else
+                        {
+                        	reculer(3);
+                        	caractereCourant();
+                        	caractereSuivant();
+                        	return getID();
+                        }
+                }
+                else
+                {
+                	reculer(2);
+                	caractereCourant();
+                	caractereSuivant();
+                	return getID();
+                }
+                            	
+                                 
+        }
+               
+                				
+        if(caractereCourant=='o')
+        {
+            caractereSuivant();
+            if(caractereCourant=='u')
+            	 return new UniteLexicale(Categorie.OPPLOG, "ou");
+            else
+            {
+            	reculer(2);
+            	caractereCourant();
+            	caractereSuivant();
+            	return getID();
+            }
+        }
+        
+        if(caractereCourant=='j')
+        {
+                caractereSuivant();
+                if(caractereCourant=='u')
+                    { 
+                        caractereSuivant();
+                        if(caractereCourant=='s')
+                        {
+                            caractereSuivant();
+                            if(caractereCourant=='q')
+                            {
+                            	caractereSuivant();
+                            	if(caractereCourant=='u')
+                                {
+                                        
+                                                caractereSuivant();
+                                                if(caractereCourant=='\'')
+                                                {
+                                                    caractereSuivant();
+                                                    if(caractereCourant=='a')
+                                                    	 return new UniteLexicale(Categorie.MotCle, "jusqu\'a");
+                                                    else
+                                                    {
+                                                    	reculer(7);
+                                                    	caractereCourant();
+                                                    	caractereSuivant();
+                                                    	return getID();
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                	reculer(6);
+                                                	caractereCourant();
+                                                	caractereSuivant();
+                                                	return getID();
+                                                }
+                                }
+                            	else
+                                {
+                                	reculer(5);
+                                	caractereCourant();
+                                	caractereSuivant();
+                                	return getID();
+                                }
+                                
+                           }
+                            else
+                            {
+                            	reculer(4);
+                            	caractereCourant();
+                            	caractereSuivant();
+                            	return getID();
+                            }
+                            
+                        }
+                        else
+                        {
+                        	reculer(3);
+                        	caractereCourant();
+                        	caractereSuivant();
+                        	return getID();
+                        }
+                    }
+                else
+                {
+                	reculer(2);
+                	caractereCourant();
+                	caractereSuivant();
+                	return getID();
+                }
+        }
+  
+        
+        
+        if(caractereCourant=='b')
+        {
+                caractereSuivant();
+                if(caractereCourant=='o')
+                    { 
+                        caractereSuivant();
+                        if(caractereCourant=='o')
+                        {
+                            caractereSuivant();
+                            if(caractereCourant=='l')                         
+                                {
+                                        caractereSuivant();
+                                        if(caractereCourant=='e')
+                                            { 
+                                                caractereSuivant();
+                                                if(caractereCourant=='e')
+                                                {
+                                                    caractereSuivant();
+                                                    if(caractereCourant=='n')
+                                                    	 return new UniteLexicale(Categorie.TYPE, "booleen");
+                                                    else
+                                                    {
+                                                    	reculer(7);
+                                                    	caractereCourant();
+                                                    	caractereSuivant();
+                                                    	return getID();
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                	reculer(6);
+                                                	caractereCourant();
+                                                	caractereSuivant();
+                                                	return getID();
+                                                }
+                                            }
+                                        else
+                                        {
+                                        	reculer(5);
+                                        	caractereCourant();
+                                        	caractereSuivant();
+                                        	return getID();
+                                        }
+                                }
+                            else
+                            {
+                            	reculer(4);
+                            	caractereCourant();
+                            	caractereSuivant();
+                            	return getID();
+                            }
+                        }
+                        else
+                        {
+                        	reculer(3);
+                        	caractereCourant();
+                        	caractereSuivant();
+                        	return getID();
+                        }
+                    }
+                else
+                {
+                	reculer(2);
+                	caractereCourant();
+                	caractereSuivant();
+                	return getID();
+                }
+        }
+        
+        
+        if(caractereCourant=='c')
+        {
+                caractereSuivant();
+                if(caractereCourant=='a')
+                    { 
+                        caractereSuivant();
+                        if(caractereCourant=='r')
+                        {
+                            caractereSuivant();
+                            if(caractereCourant=='a')
+                            {    	
+                            	caractereSuivant();
+                            	if(caractereCourant=='c')
+                                {
+                                        caractereSuivant();
+                                        if(caractereCourant=='t')
+                                            { 
+                                                caractereSuivant();
+                                                if(caractereCourant=='e')
+                                                {
+                                                    caractereSuivant();
+                                                    if(caractereCourant=='r')
+                                                    {
+                                                    	caractereSuivant();
+                                                    	if(caractereCourant=='e')
+                                                    	 return new UniteLexicale(Categorie.TYPE, "caractere");
+                                                    	else
+                                                        {
+                                                        	reculer(9);
+                                                        	caractereCourant();
+                                                        	caractereSuivant();
+                                                        	return getID();
+                                                        }
+                                                    }
+                                                    else
+                                                    {
+                                                    	reculer(8);
+                                                    	caractereCourant();
+                                                    	caractereSuivant();
+                                                    	return getID();
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                	reculer(7);
+                                                	caractereCourant();
+                                                	caractereSuivant();
+                                                	return getID();
+                                                }
+                                            }
+                                        else
+                                        {
+                                        	reculer(6);
+                                        	caractereCourant();
+                                        	caractereSuivant();
+                                        	return getID();
+                                        }
+                                }
+                            	else
+                                {
+                                	reculer(5);
+                                	caractereCourant();
+                                	caractereSuivant();
+                                	return getID();
+                                }
+                            }
+                            else
+                            {
+                            	reculer(4);
+                            	caractereCourant();
+                            	caractereSuivant();
+                            	return getID();
+                            }
+                        }
+                        else
+                        {
+                        	reculer(3);
+                        	caractereCourant();
+                        	caractereSuivant();
+                        	return getID();
+                        }
+                    }
+                else
+                {
+                	reculer(2);
+                	caractereCourant();
+                	caractereSuivant();
+                	return getID();
+                }
+        }
+        
+        
+        
+        if(caractereCourant=='p')
+        {
+                caractereSuivant();
+                if(caractereCourant=='o')
+                    { 
+                        caractereSuivant();
+                        if(caractereCourant=='u')
+                        {
+                            caractereSuivant();
+                            if(caractereCourant=='r')
+                                  return new UniteLexicale(Categorie.MotCle, "pour");
+                            else
+                            {
+                            	reculer(4);
+                            	caractereCourant();
+                            	caractereSuivant();
+                            	return getID();
+                            }
+                        }
+                        else
+                        {
+                        	reculer(3);
+                        	caractereCourant();
+                        	caractereSuivant();
+                        	return getID();
+                        }
+                    }
+
+                else
+                {
+                	reculer(2);
+                	caractereCourant();
+                	caractereSuivant();
+                	return getID();
+                }
+           
+        }    
+        
+        
+        
+        if(caractereCourant=='e')
+        {
+                caractereSuivant();
+                if(caractereCourant=='c')
+                    { 
+                        caractereSuivant();
+                        if(caractereCourant=='r')
+                        {
+                            caractereSuivant();
+                            if(caractereCourant=='i')
+                            {
+                                caractereSuivant();
+                                if(caractereCourant=='r')
+                                {
+                                	caractereSuivant();
+                                	if(caractereCourant=='e')
+                                        return new UniteLexicale(Categorie.ECRITURE, "ecrire");
+                                	else
+                                    {
+                                    	reculer(6);
+                                    	caractereCourant();
+                                    	caractereSuivant();
+                                    	return getID();
+                                    }
+                            	}
+                                else
+                                {
+                                	reculer(5);
+                                	caractereCourant();
+                                	caractereSuivant();
+                                	return getID();
+                                }
+                             }
+                            else
+                            {
+                            	reculer(4);
+                            	caractereCourant();
+                            	caractereSuivant();
+                            	return getID();
+                            }
+                            }
+                        else
+                        {
+                        	reculer(3);
+                        	caractereCourant();
+                        	caractereSuivant();
+                        	return getID();
+                        }
+                                
+                    }
+                else if(caractereCourant=='n')
+                {
+                	caractereSuivant();
+                	if(caractereCourant=='t')
+                    {
+                		caractereSuivant();
+                		if(caractereCourant=='i')
+                        {
+                			caractereSuivant();
+                    		if(caractereCourant=='e')
+                            {
+                    			caractereSuivant();
+                        		if(caractereCourant=='r')
+                        			return new UniteLexicale(Categorie.TYPE, "entier");
+                        		else
+                                {
+                                	reculer(6);
+                                	caractereCourant();
+                                	caractereSuivant();
+                                	return getID();
+                                }
+                            }
+                    		else
+                            {
+                            	reculer(5);
+                            	caractereCourant();
+                            	caractereSuivant();
+                            	return getID();
+                            }
+                        }
+                		else
+                        {
+                        	reculer(4);
+                        	caractereCourant();
+                        	caractereSuivant();
+                        	return getID();
+                        }
+                    }
+                	else
+                    {
+                    	reculer(3);
+                    	caractereCourant();
+                    	caractereSuivant();
+                    	return getID();
+                    }
+                }
+                else if(caractereCourant=='t')
+                {
+                	return new UniteLexicale(Categorie.OPPLOG, "et");
+                }
+                else
+                {
+                	reculer(2);
+                	caractereCourant();
+                	caractereSuivant();
+                	return getID();
+                }
+        }
+                    
+        if(caractereCourant=='\"')
+        {
+        	 StringBuffer sb=new StringBuffer();
+        	caractereSuivant();
+        	while (caractereCourant !='\"')
+        	{
+        		sb.append(caractereCourant);
+        		caractereSuivant();
+        		if(eof || caractereCourant=='\n')
+        			break;
+        		
+        	}
+        	return new UniteLexicale(Categorie.VARCHAR,"\""+sb.toString()+"\"");
+        	
+        }
+        
+        
+        
+        if(Character.isLetter(caractereCourant))
+            return getID();
+        
+        if(Character.isDigit(caractereCourant))
+        
+            return getNombre();
+        
+        
+        
+        if(caractereCourant=='<')
+        {
+        	caractereSuivant();
+        	if(caractereCourant=='-')
+        		 return new UniteLexicale(Categorie.OPPAff, "<-");       	
+        	else if(caractereCourant=='=')
+        	{
+        		return new UniteLexicale(Categorie.OPPRel, "<=");
+        	}
+        	else if(caractereCourant=='>')
+        	{
+        		return new UniteLexicale(Categorie.OPPRel, "<>");
+        	}
+        	else
+        	{
+        		return new UniteLexicale(Categorie.OPPRel, "<");
+        	}
+        	
+        }
+
+        if( caractereCourant=='>')
+        {
+        	caractereSuivant();
+        	if(caractereCourant=='=')
+        	{
+        		return new UniteLexicale(Categorie.OPPRel, ">=");
+        	}
+        	else
+        	{
+        		return new UniteLexicale(Categorie.OPPRel, ">");
+        	}
+        }
+        if(caractereCourant=='=')
+    	{
+        	return new UniteLexicale(Categorie.OPPRel, "=");
+    	}
+        
+        
+        
+        
+        return new UniteLexicale(Categorie.ERR,Character.toString(caractereCourant));
+    }   
+         
+ 
+
+    public UniteLexicale getID() {
+    	//caractereSuivant();
+        int etat=0;
+        StringBuffer sb=new StringBuffer();
+        while(true) {
+            switch(etat) {
+                case 0 : etat=1;
+                    sb.append(caractereCourant);
+                    break;
+                case 1 : caractereSuivant();
+                    if(eof)
+                        etat=3;
+                    else
+                    if(Character.isLetterOrDigit(caractereCourant))
+                        sb.append(caractereCourant);
+                    else
+                        etat=2;
+                    break;
+                case 2 : reculer(1);
+                    return new UniteLexicale(Categorie.ID, sb.toString());
+                case 3 : return new UniteLexicale(Categorie.ID, sb.toString());
+            }
+        }
+    }
+
+    public UniteLexicale getNombre() {
+        int etat=0;
+        StringBuffer sb=new StringBuffer();
+        while(true) {
+            switch(etat) {
+                case 0 : etat=1;
+                    sb.append(caractereCourant);
+                    break;
+                case 1 : caractereSuivant();
+                    if(eof)
+                        etat=3;
+                    else
+                    if(Character.isDigit(caractereCourant))
+                        sb.append(caractereCourant);
+                    else
+                        etat=2;
+                    break;
+                case 2 : reculer(1);
+                    return new UniteLexicale(Categorie.NB, sb.toString());
+                case 3 : return new UniteLexicale(Categorie.NB, sb.toString());
+            }
+        }
+
+    }
+
+
+ 
+
+
+    @Override
+    public String toString() {
+        // TODO Auto-generated method stub
+        return fluxCaracteres.toString();
+    }
+
+
+	
+}

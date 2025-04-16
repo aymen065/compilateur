@@ -1,0 +1,9 @@
+package compilateur;
+
+import java.util.Stack;
+
+public class Dds {
+public Object val;
+public String type;
+
+}

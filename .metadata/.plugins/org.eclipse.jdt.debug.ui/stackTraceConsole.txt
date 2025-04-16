@@ -1,0 +1,48 @@
+public static void main(String[] args) throws Exception {
+        System.out.println("***********************Affichage du mot accepte a partir du fichier ***");
+
+        File doc = new File("C:/Users/pc/Desktop/notreGrammaire.txt");
+
+        BufferedReader obj = new BufferedReader(new FileReader(doc));
+
+        ArrayList<String> temp = new ArrayList<String>();
+        String strng;
+        while ((strng = obj.readLine()) != null) {
+            // REMPLIR TT
+            temp.add(strng);
+
+        }
+        System.out.println(temp);
+
+        String t1[] = new String[temp.size()];
+
+        for (int j = 0; j < temp.size(); j++) {
+            t1[j] = temp.get(j);
+        }
+
+       
+
+        System.out.println("***********************Analyse lexical*********************************");
+
+        ArrayList<String> tab = new ArrayList<String>();
+
+        Scanner anaLex = new Scanner("C:/User/pc/Desktop/notreGrammaire.txt");
+
+        UniteLexicale ul;
+
+        do {
+            ul = anaLex.lexemeSuivant();
+            tab.add(ul.toString());
+
+        } while (ul.getCategorie() != Categorie.EOF);
+
+ 
+
+        for (int i = 0; i < tab.size(); i++)
+
+            System.out.println(" " + tab.get(i));
+
+        System.out.println("***********************Analyse Syntaxique*****************************");
+        String tt[] = { "e", "a", ";", "{", "l","a","s","a","<","9","o","a",":","9","f","c","a","}","$" };
+        Parser test22 = new Parser();
+        test22.analyzeSLnew(tt);

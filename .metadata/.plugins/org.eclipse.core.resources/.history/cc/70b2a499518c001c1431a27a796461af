@@ -1,0 +1,61 @@
+package compilateur;
+
+public enum Categorie {
+	
+		EOL,
+        EOF,
+        $,
+        NUL,
+        ID,
+        NB,
+        VARCHAR,
+        BOOL,
+        LITT,
+        TYPE,
+        PV,
+        PT,
+        VIRG,
+        OPPAff,
+        OPPRel,
+        OPPLOG,
+        OPPARI,
+        DEBUT,
+        FIN, 
+        MotCle, 
+        OPERATEUR,
+        LECTURE,
+        ECRITURE,
+        ACO,
+        ACF,
+        PO,
+        PF,
+        CHAP,
+        ERR,
+        ;
+        
+        public String toString() {
+            return this.name().toLowerCase();
+        }
+
+        public static Categorie toCategorie(String s) {
+            for(Categorie c:Categorie.values())
+                if(c.toString().equalsIgnoreCase(s))
+                    return c;
+            return null;
+        }
+
+        public boolean estTerminal() {
+            return ordinal()>=10 && ordinal()<=100;
+        }
+
+        public boolean estNonTerminal() {
+            return ordinal()>100;
+        }
+        }
+
+
+
+
+
+
+

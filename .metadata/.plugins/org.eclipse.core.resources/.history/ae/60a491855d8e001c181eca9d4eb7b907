@@ -1,0 +1,14 @@
+package compilateur;
+
+import java.util.Stack;
+
+public class Dds {
+public Object valeur;
+public String type;
+public Dds(Object valeur, String type) {
+	//super();
+	this.valeur = valeur;
+	this.type = type;
+}
+
+}

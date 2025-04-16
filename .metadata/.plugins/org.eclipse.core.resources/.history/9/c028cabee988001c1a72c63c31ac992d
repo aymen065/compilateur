@@ -1,0 +1,23 @@
+package compilateur;
+
+public class UniteLexicale {
+	public Categorie categorie;
+    public Object lexeme;
+
+    public UniteLexicale(Categorie categorie, Object lexeme) {
+        this.categorie=categorie;
+        this.lexeme=lexeme;
+    }
+
+    public Categorie getCategorie() {
+        return categorie;
+    }
+    
+    public Object getLexeme() {
+        return lexeme;
+    }
+
+    public String toString() {
+        return "L unite lexical est :"+categorie.toString()+" , et le lexeme est: "+lexeme+" ";
+    }
+}

@@ -1,0 +1,61 @@
+package compilateur;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.Stack;
+
+public class Parser {
+	public String[] LRGS = {"P->D ; I",
+			"D->D ; D",
+			"D->V T",
+			"V->id , V",
+			"V->id",
+			"T->caractere",
+			"T->entier",
+			"T->reel",
+			"T->booleen",
+			"tab [N] de T",
+			"T->^T",
+			"I->I ; I",
+			"I->id <- E",
+			"I->lire(E)",
+			"I->ecrire(E)",
+			"I->si E alors I fin si",
+			"I->si E alors I si non I fin si",
+			"I->tant que E faire I fin tant que",
+			"I->pour E faire I fin pour",
+			"I->repeter I jusqu'a E",
+			"I->I ;",
+			"E->L",
+			"E->N",
+			"E->id",
+			"E->id de N a N",
+			"E->E = E",
+			"E->E < E",
+			"E->E <= E",
+			"E->E > E",
+			"E->E >= E",
+			"E->E <> E",
+			"E->E div E",
+			"E->E mod E",
+			"E->E + E",
+			"E->E - E",
+			"E->E * E",
+			"E->E / E",
+			"E->E et E",
+			"E->E ou E",
+			"E->not E",
+			"E->(E)",
+			"N->N.N",
+			"N->nb",
+			"N->nb N",
+			"L->litt",
+			"L->litt L",
+			"nb->0|1|2|3|4|5|6|7|8|9",
+			"litt->a|b|c|d|e|f|g|h|i|j|k|l|m|n|o|p|q|r|s|t|u|v|w|x|y|z",			
+	};
+	
+	
+}

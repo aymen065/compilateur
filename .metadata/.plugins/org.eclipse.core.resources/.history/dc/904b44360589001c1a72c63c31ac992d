@@ -1,0 +1,108 @@
+package compilateur;
+
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.util.ArrayList;
+
+public class Main {
+
+	public static void main(String[] args) throws Exception  {
+		System.out.println("***********************Affichage du mot accepte a partir du fichier ***");
+
+		File doc = new File("C:\\Users\\HP\\Desktop\\gl3\\programme.txt");
+
+		BufferedReader obj = new BufferedReader(new FileReader(doc));
+
+		ArrayList<String> temp = new ArrayList<String>();
+		String line;
+		ArrayList<String> tabMot = new ArrayList<String>();
+		while ((line = obj.readLine()) != null) {
+			// REMPLIR TT
+			temp.add(line);
+			String[] parts = line.split(" \t");
+			for(int i=1;i<parts.length;i++)
+			{
+				tabMot.add(parts[i]);
+			}
+		}
+		System.out.println(temp);
+
+		String t[] = new String[temp.size()];
+
+		for (int j = 0; j < temp.size(); j++) {
+			t[j] = temp.get(j);
+		}
+
+		System.out.println("***********************Analyse lexical*********************************");
+
+		ArrayList<String> tab = new ArrayList<String>();
+		ArrayList<String> tabId = new ArrayList<String>();
+		
+		Scanner anaLex = new Scanner("C:\\Users\\HP\\Desktop\\gl3\\programme.txt");
+
+		UniteLexicale ul;
+
+		do {
+			ul = anaLex.lexemeSuivant();
+			tab.add(ul.toString());
+			
+			if(ul.getCategorie()==Categorie.ID)
+			{
+				tabId.add(ul.getLexeme());
+			}
+
+		} while (ul.getCategorie() != Categorie.EOF);
+
+		for (int i = 0; i < tab.size(); i++)
+			System.out.println(" " + tab.get(i));
+		String tt[] = new String[tabMot.size()+1];
+		for (int i = 0; i < tabMot.size(); i++)
+			tt[i]=tabMot.get(i);
+		tt[tabMot.size()]="$";
+		
+		obj.close();
+		System.out.println("***********************Analyse Syntaxique*****************************");
+		//String tt[] = { "id", "entier",";","id","reel",";","debut", "si", "bb","=", "\"aymen\"","alors", "id", "<-" , "id" ,"+","nb",";" , "id" , "<-" , "405", "si" , "non" ,  "id" , "<-" , "vrai", "finsi" , ";" , "fin", "$" };
+		/*String tt[] = { 
+				
+				
+						"i", "," ,"j" , "entier" , ";" ,
+						"r" , "reel" , ";" ,
+						"bool" , "booleen" , ";" ,
+						"s" , "caractere" , ";" ,
+						"t" , "tab" ,"[","100","]","de","entier", ";",
+						"debut" ,
+								"j","<-","0",";",
+								"pour" , "i", "de", "0", "a","70","faire",
+								"j","<-", "j","+","1",
+								"finp", ";",
+								"s", "<-" , "\"a\"" ,";",
+								"lire","(","t","[","0","]",")",";",
+								"lire","(","t","[","1","]",")",";",
+								"lire","(","t","[","2","]",")",";",
+								
+								"si" , "id","[","0","]" , "=" , "j" , "alors" ,
+									"ecrire","(","t","[","0","]",",","\"la première case du tableau t est égale à j\"",")",
+								"si" ,"non",
+									"si" , "id","[","1","]" , "=" , "j" , "alors" ,
+										"ecrire","(","t","[","1","]",",","\"la première case du tableau t est égale à j\"",")",
+									"si" ,"non",
+										"si" , "id","[","2","]" , "=" , "j" , "alors" ,
+											"ecrire","(","t","[","2","]",",","\"la première case du tableau t est égale à j\"",")",
+										"finsi",
+									"finsi",
+									
+								"finsi", ";",
+								
+						"fin",
+						
+		
+		"$" };
+		*/
+		Parser test22 = new Parser();
+		test22.analyzeSLnew(tt) ;
+		for (int i = 0; i < tt.length; i++)
+			System.out.println(tt[i]);
+	}
+}

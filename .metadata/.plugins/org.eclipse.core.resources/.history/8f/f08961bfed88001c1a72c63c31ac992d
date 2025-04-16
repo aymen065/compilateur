@@ -1,0 +1,101 @@
+package compilateur;
+
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.util.ArrayList;
+
+public class Main {
+
+	public static void main(String[] args) throws Exception  {
+		System.out.println("***********************Affichage du mot accepte a partir du fichier ***");
+
+		File doc = new File("C:\\Users\\HP\\Desktop\\gl3\\programme.txt");
+
+		BufferedReader obj = new BufferedReader(new FileReader(doc));
+
+		ArrayList<String> temp = new ArrayList<String>();
+		String strng;
+		while ((strng = obj.readLine()) != null) {
+			// REMPLIR TT
+			temp.add(strng);
+
+		}
+		System.out.println(temp);
+
+		String t[] = new String[temp.size()];
+
+		for (int j = 0; j < temp.size(); j++) {
+			t[j] = temp.get(j);
+		}
+
+		System.out.println("***********************Analyse lexical*********************************");
+
+		ArrayList<String> tab = new ArrayList<String>();
+		ArrayList<String> tabId = new ArrayList<String>();
+		Scanner anaLex = new Scanner("C:\\Users\\HP\\Desktop\\gl3\\programme.txt");
+
+		UniteLexicale ul;
+
+		do {
+			ul = anaLex.lexemeSuivant();
+			tab.add(ul.toString());
+			
+			if(ul.getCategorie()==Categorie.ID)
+			{
+				tabId.add(ul.getLexeme());
+			}
+
+		} while (ul.getCategorie() != Categorie.EOF);
+
+		for (int i = 0; i < tab.size(); i++)
+
+			System.out.println(" " + tab.get(i));
+		for (int i = 0; i < tabId.size(); i++)
+
+			System.out.println("id "+i+" "+ tabId.get(i));
+		
+		
+		
+obj.close();
+	/*	System.out.println("***********************Analyse Syntaxique*****************************");
+		//String tt[] = { "id", "entier",";","id","reel",";","debut", "si", "id","=", "aymen","alors", "id", "<-" , "id" ,"+","nb",";" , "id" , "<-" , "405", "si" , "non" ,  "id" , "<-" , "vrai", "finsi" , ";" , "fin", "$" };
+		String tt[] = { 
+				
+				
+						"id", "," ,"id" , "entier" , ";" ,
+						"id" , "reel" , ";" ,
+						"id" , "booleen" , ";" ,
+						"id" , "tab" ,"[","100","]","de","entier", ";",
+						"debut" ,
+						
+								"pour" , "id", "de", "0", "à","70","faire",
+								"id","<-", "id","+","1",
+								"finp", ";",
+								"id", "<-" , "20" ,";",
+								"lire","(","id","[","0","]",")",";",
+								"lire","(","id","[","1","]",")",";",
+								"lire","(","id","[","2","]",")",";",
+								
+								"si" , "id","[","0","]" , "=" , "20" , "alors" ,
+									"ecrire","(","id","[","0","]",",","vingt",")",
+								"si" ,"non",
+									"si" , "id","[","1","]" , "=" , "20" , "alors" ,
+										"ecrire","(","id","[","1","]",",","vingt",")",
+									"si" ,"non",
+										"si" , "id","[","2","]" , "=" , "20" , "alors" ,
+											"ecrire","(","id","[","2","]",",","vingt",")",
+										"finsi",
+									"finsi",
+									
+								"finsi", ";",
+								
+						"fin",
+						
+		
+		"$" };
+		Parser test22 = new Parser();
+		test22.analyzeSLnew(tt);
+*/
+	}
+}
